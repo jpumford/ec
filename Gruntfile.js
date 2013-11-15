@@ -249,9 +249,9 @@ module.exports = function (grunt) {
         singleRun: true
       }
     },
-    cdnify: {
+    htmlrefs: {
       dist: {
-        html: ['<%= yeoman.dist %>/*.html']
+        src: ['<%= yeoman.dist %>/*.html']
       }
     },
     ngmin: {
@@ -303,7 +303,7 @@ module.exports = function (grunt) {
     'autoprefixer',
     'concat',
     'copy:dist',
-    'cdnify',
+	'htmlrefs',
     'ngmin',
     'cssmin',
     'uglify',

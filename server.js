@@ -10,19 +10,31 @@ var mysql = require('mysql');
 
 var fs = require('fs');
 
-app.use(express.static(__dirname + '/.tmp'));
-app.use(express.static(__dirname + '/app'));
-app.use("/pictures", express.static(__dirname + '/pictures'));
-app.use(express.static(__dirname + '/res'));
+var config = require('./config');
+
+var mode = process.argv[2] != undefined ? process.argv[2] : 'dev';
+if (mode != 'dev' && mode != 'prod') {
+	throw new Exception("Must select prod or dev server");
+}
+
+if (mode == 'prod') {
+	app.use(express.static(__dirname + '/dist'));
+	app.use('/pictures', express.static(__dirname + '/pictures'));
+	app.use(express.static(__dirname + '/res'));
+	var port = config.prod.port;
+} else {
+
+	app.use(express.static(__dirname + '/.tmp'));
+	app.use(express.static(__dirname + '/app'));
+	app.use("/pictures", express.static(__dirname + '/pictures'));
+	app.use(express.static(__dirname + '/res'));
+	var port = config.dev.port;
+}
 
 app.use(express.bodyParser());
 
 function getMySQLConnection() {
-	var connection = mysql.createConnection({
-		host: 'localhost',
-		user: 'root',
-		password: 'root'
-	});
+	var connection = mysql.createConnection(config.mysql);
 	connection.connect(function(error) {
 		if (error) {
 			throw new Error("Could not connect to mysql server!");
@@ -214,6 +226,6 @@ io.sockets.on('connection', function(socket) {
 	});
 });
 
-server.listen(9000);
+server.listen(port);
 
-console.log("Listening on port 9000");
+console.log("Listening on port " + port);
