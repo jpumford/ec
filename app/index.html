@@ -1,0 +1,140 @@
+<!doctype html>
+<!--[if lt IE 7]>	   <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>		   <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>		   <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title></title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width">
+		<!-- Place favicon.ico and apple-touch-icon.png in the root directory -->
+
+			<!-- build:css(.tmp) styles/main.css -->
+			<link rel="stylesheet" href="styles/cui.min.css">
+			<link rel="stylesheet" href="styles/main.css">
+			<!-- endbuild -->
+	</head>
+	<body ng-app="ecApp">
+		<!--[if lt IE 7]>
+			<p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
+		<![endif]-->
+
+		<!--[if lt IE 9]>
+			<script src="lib/es5-shim/es5-shim.js"></script>
+			<script src="lib/json3/lib/json3.min.js"></script>
+		<![endif]-->
+
+		<header class="top">
+			<div class="logo">
+				<a href="/">
+					<i class="icon-marketingcloud medium">Web Excellence Project</i>
+				</a>
+			</div>
+			<nav class="crumbs">
+				<a>Web Excellence Project</a>
+			</nav>
+			<div class="drawer" ng-controller="UploadController">
+				<div id="imageUploadModal" class="modal">
+					<div class="modal-header">
+						<h2>Upload Image</h2>
+						<button type="button" class="close" data-dismiss="modal">&times;</button>
+					</div>
+					<div class="modal-body">
+						<form>
+							<input type="text" ng-model="name" placeholder="Name">
+							<br>
+							<input type="file" ng-file-select="onFileSelect($files)" accept="image/*">
+							<br>
+							<div class="alert error" ng-show="errors">
+								<div ng-repeat="error in errors" style="display: block;">
+									<strong>{{error}}</strong>
+								</div>
+							</div>
+							<div class="progress" ng-show="uploading">
+								<div class="bar" ng-style="{width: percentUploaded + '%'}"></div>
+							</div>
+						</form>
+					</div>
+					<div class="modal-footer">
+						<button data-dismiss="modal" ng-class="{disabled: uploading}" ng-disabled="uploading">Cancel</button>
+						<button class="button primary" ng-click="submitFile()" ng-class="{disabled: uploading}" ng-disabled="uploading">Submit</button>
+					</div>
+				</div>
+				<a ng-click="showModal()">Upload Image</a>
+			</div>
+		</header>
+		<div class="page shadowBox" role="main">
+			<div class="rail right" role="complementary">
+				<div class="wrap" ng-controller="MainCtrl">
+					<section>
+					<h2 style="color: #c8c8c8">"{{room.description}}"</h4>
+					</section>
+					<section style="height: 200px; overflow-y: auto;">
+						<div class="smallText greyText lightText" ng-repeat="user in users"
+							ng-class="{currentUser: name == user}">{{user}}</div>
+					</section>
+					<section style="height: 400px; padding: 10px;">
+						<div style="background-color: #eee; height: 100%; width: 100%; overflow-y: scroll;">
+							<div style="padding: 10px;">
+								<p ng-repeat="message in messages" ng-class="{broadcast: message.user == 'chatroom'}" class="chat-message">{{ message | chatMessage }}</p>
+							</div>
+						</div>
+						<form ng-submit="sendMessage()">
+							<div style="padding: 10px;">
+								<input ng-model="message" style="width: 100%;">
+							</div>
+								<input type="submit" value="Send" style="display: none;">
+						</form>
+						<div style="text-align: center;">
+							<p>Your current name is "{{name}}"</p>
+							<form ng-submit="changeName()">
+								<input ng-model="newName" style="height: 2rem;">
+								<input class="button primary" type="submit" value="Change Name">
+							</form>
+						</div>
+					</section>
+				</div>
+			</div>
+			<div class="content">
+				<div class="grid" ng-controller="ImageController">
+					<article class="card-asset" style="width: 15rem; margin-right: 0.9375rem; float: left;" ng-repeat="picture in pictures">
+						<i class="select"></i>
+						<i class="move"></i>
+						<a ng-click="imageClicked(picture.id, picture.description)">
+							<span class="image">
+								<img src="/pictures/{{picture.id}}.{{picture.filetype}}" class="show-grid" alt="{{picture.description}}">
+							</span>
+							<div class="label">
+								<h4>{{ picture.description }}</h4>
+							</div>
+						</a>
+					</article>
+				</div>
+			</div>
+		</div>
+
+		<script src="lib/angularjs-file-upload/angular-file-upload-shim.min.js"></script>
+		<script src="lib/angular/angular.js"></script>
+		<script src="lib/jquery/jquery.min.js"></script>
+		<script src="lib/cui/CUI.min.js"></script>
+		<script src="/socket.io/socket.io.js"></script>
+
+		<!-- build:js scripts/modules.js -->
+		<script src="lib/angular-resource/angular-resource.js"></script>
+		<script src="lib/angular-socket-io/socket.js"></script>
+		<script src="lib/angularjs-file-upload/angular-file-upload.min.js"></script>
+		<!-- endbuild -->
+
+		<!-- build:js({.tmp,app}) scripts/scripts.js -->
+		<script src="scripts/app.js"></script>
+		<script src="scripts/controllers/main.js"></script>
+		<script src="scripts/controllers/ImageController.js"></script>
+		<script src="scripts/services/RoomService.js"></script>
+		<script src="scripts/filters/chatMessage.js"></script>
+		<script src="scripts/controllers/uploadController.js"></script>
+		<script src="scripts/services/ImageService.js"></script>
+		<!-- endbuild -->
+	</body>
+</html>

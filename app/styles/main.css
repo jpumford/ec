@@ -1,0 +1,18 @@
+.currentUser {
+	font-weight: bold;
+	text-decoration: underline;
+}
+
+.page .rail {
+	width: 25rem;
+}
+
+.broadcast.chat-message {
+	color: red;
+}
+
+.chat-message {
+	margin: 0;
+	padding: 0;
+	color: #333;
+}

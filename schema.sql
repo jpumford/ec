@@ -1,0 +1,7 @@
+CREATE  TABLE IF NOT EXISTS `EC`.`Pictures` (
+  `id` INT NOT NULL AUTO_INCREMENT ,
+  `description` VARCHAR(300) NOT NULL ,
+  `filetype` VARCHAR(4) NOT NULL,
+  PRIMARY KEY (`id`) ,
+  UNIQUE INDEX `id_UNIQUE` (`id` ASC) )
+ENGINE = InnoDB
